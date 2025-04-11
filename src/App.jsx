@@ -11,19 +11,20 @@ function App() {
   const [isaddData, setisAddData] = useState(false)
   const [iseditData, setisEditData] = useState(false)
   const [editid, setEditId] = useState('')
-
+  const [isDelete, setIsDelete] = useState(false)
+  const [deleteId, setDeleteId] = useState('')
 
   const handleTask = (event) => {
     setSkill(event.target.value)
   }
 
   const handleTaskAdd = () => {
-    if(skill === ''){
+    if (skill === '') {
       alert('Please enter your Value')
       return;
     }
     const duplicatValue = addData.find((ele) => ele.skill === skill)
-    if(duplicatValue){
+    if (duplicatValue) {
       alert('Please enter your different Value')
       return;
     }
@@ -33,9 +34,15 @@ function App() {
     setisAddData(false)
   }
 
-  const handleDeleteTask = (id) => {
-    const Deletetask = addData.filter((ele) => ele.id !== id)
+  const handleDeleteClick = (id) => {
+    setDeleteId(id)
+    setIsDelete(true)
+  }
+
+  const handleDeleteTask = () => {
+    const Deletetask = addData.filter((ele) => ele.id !== deleteId)
     setAddData(Deletetask)
+    setIsDelete(false)
   }
 
   const handleEditTask = (id) => {
@@ -56,12 +63,13 @@ function App() {
     setSkill('')
     setisEditData(false)
   }
-  
+
 
   const handleModelCancel = () => {
     setSkill('')
     setisEditData(false)
     setisAddData(false)
+    setIsDelete(false)
   }
 
   return (
@@ -74,10 +82,15 @@ function App() {
             <Input placeholder="Add Skills" value={skill} onChange={handleTask} className='p-2' />
             <Button variant="filled" onClick={iseditData ? updateTask : handleTaskAdd} className='ms-3 mt-3' color="rgba(5, 158, 33, 1)"> {isaddData ? 'Add Data' : 'Update Data'}</Button>
             <Button variant="filled" onClick={handleModelCancel} className='ms-3 mt-3' color="rgba(235, 30, 30, 1)">Cancel Data</Button>
-          </div> 
+          </div>
         </Modal>
-        <Button variant="default" onClick={() => { setisAddData(true) }}>+</Button>
-
+        <Button variant="default" onClick={() => { setisAddData(true) }} className='shadow-xl'><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+        </svg></Button>
+        <Modal opened={isDelete} onClose={() => setIsDelete(false)} title={'Are you sure?'}>
+          <Button variant="filled" onClick={handleDeleteTask} className='ms-3 mt-3' color="rgba(5, 158, 33, 1)">save</Button>
+          <Button variant="filled" onClick={() => setIsDelete(false)} className='ms-3 mt-3' color="rgba(235, 30, 30, 1)">Cancel</Button>
+        </Modal>
       </div>
       {
         addData.map((ele) => {
@@ -88,9 +101,10 @@ function App() {
                   <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
                   <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
                 </svg></Button>
-                <Button variant="filled" onClick={() => { handleDeleteTask(ele.id) }} className='ms-3' color="rgba(235, 30, 30, 1)"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                <Button variant="filled" onClick={() => { handleDeleteClick(ele.id) }} className='ms-3' color="rgba(235, 30, 30, 1)"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
                   <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0" />
-                </svg></Button>
+                </svg>
+                </Button>
               </div>
             </div>
           )
