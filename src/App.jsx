@@ -123,7 +123,7 @@ function App() {
           </div>
         </div>
 
-        <div className='flex gap-5 mt-8 justify-between'>
+        <div className='flex gap-10 mt-8 items-center justify-center'>
           <button name='All' onClick={filterDataByCategory} className='shadow-sm shadow-white p-3 rounded cursor-pointer'>All</button>
           <button name='Frontend' onClick={filterDataByCategory} className='shadow-sm shadow-white p-3 rounded cursor-pointer'>Frontend</button>
           <button name='Backend' onClick={filterDataByCategory} className='shadow-sm shadow-white p-3 rounded cursor-pointer'>Backend</button>
