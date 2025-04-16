@@ -15,6 +15,7 @@ function App() {
   const [isDelete, setIsDelete] = useState(false)
   const [deleteId, setDeleteId] = useState('')
   const [selectvalue, setSelectValue] = useState('Select Category')
+  const [ActiveAll, setActiveAll] = useState('All')
 
   useEffect(() => {
     setCategoryData(addData)
@@ -70,7 +71,7 @@ function App() {
       alert('Please Enter Your Skill')
       return;
     }
-    if (selectvalue === 'Select Category') {
+    if (selectvalue === 'Select Category') {  
       alert('Please Select Your Category')
       return;
     }
@@ -92,9 +93,10 @@ function App() {
     if (categoryName === 'All') {
       setCategoryData(addData)
     } else {
-      const filteredData = addData.filter((ele) => ele.category === categoryName);
+      const filteredData = addData.filter((ele) => ele.category === categoryName);  
       setCategoryData(filteredData)
     }
+    setActiveAll(categoryName)
   }
 
   const handleModelCancel = () => {
@@ -106,12 +108,11 @@ function App() {
   }
 
   return (
-    <div className='text-center rounded-3xl text-white bg-linear-30 from-blue-800 to-gray-300 shadow-xl shadow-gray-400 mt-5 p-5 w-lg place-self-center'>
-      <div className='p-3'>
+    <div className='max-w-3xl w-lg mx-auto text-center rounded-3xl text-white bg-linear-30 from-blue-800 to-gray-300 shadow-xl shadow-gray-400 mt-5 p-5 place-self-center m-5'>
         <div className='flex justify-between'>
           <h1 className='text-4xl mt-2'>Skills</h1>
 
-          <Modal opened={isaddData} onClose={() => setisAddData(false)} title={'Add Skills'}>
+          <Modal opened={isaddData} onClose={() => handleModelCancel()} title={'Add Skills'}>
             <div>
               <Input placeholder="Add Your Skills" value={skill} onChange={handleTask} />
               <NativeSelect value={selectvalue} onChange={(ele) => { setSelectValue(ele.target.value) }} data={['Select Category', 'Frontend', 'Backend']} className='mt-3' />
@@ -128,9 +129,9 @@ function App() {
         </div>
 
         <div className='flex gap-10 mt-8 items-center justify-center'>
-          <button name='All' onClick={filterDataByCategory} className='shadow-sm shadow-white p-3 rounded cursor-pointer'>All</button>
-          <button name='Frontend' onClick={filterDataByCategory} className='shadow-sm shadow-white p-3 rounded cursor-pointer'>Frontend</button>
-          <button name='Backend' onClick={filterDataByCategory} className='shadow-sm shadow-white p-3 rounded cursor-pointer'>Backend</button>
+          <button name='All' onClick={filterDataByCategory} className={`shadow-sm shadow-white p-3 rounded cursor-pointer ${ActiveAll === "All" ? "bg-blue-900" : "bg-indigo-700"}`}>All</button>
+          <button name='Frontend' onClick={filterDataByCategory} className={`shadow-sm shadow-white p-3 rounded cursor-pointer ${ActiveAll === "Frontend" ? "bg-blue-900" : "bg-indigo-700"}`}>Frontend</button>
+          <button name='Backend' onClick={filterDataByCategory} className={`shadow-sm shadow-white p-3 rounded cursor-pointer ${ActiveAll === "Backend" ? "bg-blue-900" : "bg-indigo-700"}`}>Backend</button>
         </div>
 
         <Modal opened={isDelete} onClose={() => setIsDelete(false)} title={'Are you sure?'}>
@@ -144,9 +145,8 @@ function App() {
           <Button variant="filled" onClick={updateTask} className='ms-3 mt-3' color="rgba(5, 158, 33, 1)">Update</Button>
           <Button variant="filled" onClick={handleModelCancel} className='ms-3 mt-3' color="rgba(235, 30, 30, 1)">Cancel</Button>
         </Modal>
-      </div>
       {
-        categoryData.length === 0 ? (<div className="mt-5 text-xl text-white font-bold">No Data Found</div>)
+        categoryData.length === 0 ? (<div className="text-xl text-white font-bold mt-5">No Data Found</div>)
           : (categoryData.map((ele) => {
             return (
               <div key={ele.id} className='p-2 mt-5 flex items-center justify-between bg-linear-60 from-blue-900 to-gray-400 shadow-xl'>{ele.skill}
