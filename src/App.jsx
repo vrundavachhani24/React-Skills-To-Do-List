@@ -92,25 +92,28 @@ function App() {
       }
       return ele;
     })
-    setAddData(updatedData);
+    setAddData(updatedData)
     setSkill('')
     setisEditData(false)
     setSelectValue('Select Category')
   }
-  console.log(addData)
 
   const filterDataByCategory = (event) => {
     const categoryName = event.target.name
-    if (categoryName === 'All') {
+    
+    if (categoryName === 'All' || ActiveAll === categoryName) {
       setCategoryData(addData)
     } else {
       const filteredData = addData.filter((ele) => ele.category === categoryName)
       setCategoryData(filteredData)
     }
     setSelectValue(categoryName)
-    setActiveAll(categoryName)
-  }
-
+    if (ActiveAll === categoryName){
+      setActiveAll("All")
+    }else{
+      setActiveAll(categoryName)
+    }
+  }  
 
   const handleModelCancel = () => {
     setSkill('')
@@ -148,8 +151,8 @@ function App() {
       </div>
 
       <Modal opened={isDelete} onClose={() => setIsDelete(false)} title={'Are you sure?'}>
-        <Button variant="filled" onClick={handleDeleteTask} className='ms-3 mt-3' color="rgba(5, 158, 33, 1)">Save</Button>
-        <Button variant="filled" onClick={() => setIsDelete(false)} className='ms-3 mt-3' color="rgba(235, 30, 30, 1)">Cancel</Button>
+        <Button variant="filled" onClick={handleDeleteTask} className='ms-3 mt-3' color="rgba(5, 158, 33, 1)">Yes</Button>
+        <Button variant="filled" onClick={() => setIsDelete(false)} className='ms-3 mt-3' color="rgba(235, 30, 30, 1)">No</Button>
       </Modal>
 
       <Modal opened={iseditData} onClose={handleModelCancel} title={'Edit Your Skill'}>
